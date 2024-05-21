@@ -15,6 +15,7 @@ let cfg = config.custom.hyprland; in {
     ];
     wayland.windowManager.hyprland = {
       enable = true;
+      systemd.enable = true;
       extraConfig = ''
         # Source a file (multi-file configs)
         source=~/.config/hypr/frappe.conf
@@ -124,8 +125,14 @@ let cfg = config.custom.hyprland; in {
     #   # };
     # };
     programs.wofi.enable = true;
-    programs.waybar.enable = true;
-    services.mako.enable = true;
+    programs.waybar = {
+      enable = true;
+      systemd.enable = true;
+    };
+    services.mako = {
+      enable = true;
+      defaultTimeout = 10000;
+    };
     programs.foot.enable = true;
     programs.yazi = {
       enable = true;
