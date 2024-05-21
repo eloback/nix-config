@@ -26,19 +26,31 @@
         simone = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           # > Our main nixos configuration file <
-          modules = [ ./nixos/configuration.nix ];
+          modules = [
+            ./nixos/configuration.nix
+            # NOTE: To use standalone home-manager configuration comment bellow here.
+            home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                extraSpecialArgs = { inherit inputs outputs; };
+                useUserPackages = true;
+                useGlobalPkgs = true;
+                users.eloback = ./home-manager/home.nix;
+              };
+            }
+          ];
         };
       };
 
       # Standalone home-manager configuration entrypoint
       # Available through 'home-manager --flake .#your-username@your-hostname'
-      homeConfigurations = {
-        "eloback@simone" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = { inherit inputs outputs; };
-          # > Our main home-manager configuration file <
-          modules = [ ./home-manager/home.nix ];
-        };
-      };
+      # homeConfigurations = {
+      #   "eloback@simone" = home-manager.lib.homeManagerConfiguration {
+      #     pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+      #     extraSpecialArgs = { inherit inputs outputs; };
+      #     # > Our main home-manager configuration file <
+      #     modules = [ ./home-manager/home.nix ];
+      #   };
+      # };
     };
 }
