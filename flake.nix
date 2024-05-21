@@ -33,9 +33,7 @@
             {
               home-manager = {
                 extraSpecialArgs = { inherit inputs outputs; };
-                useUserPackages = true;
-                useGlobalPkgs = true;
-                users.eloback = ./home-manager/home.nix;
+                users.eloback = import ./home-manager/home.nix;
               };
             }
           ];
