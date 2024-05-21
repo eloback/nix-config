@@ -13,7 +13,9 @@
     extraPackages = with pkgs; [
       ripgrep # Requirement for telescope
       fd
-      libgcc
+      gcc
+      nil
+      nixpkgs-fmt
     ];
   };
 }
