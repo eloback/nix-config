@@ -71,6 +71,7 @@
     git
   ];
 
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
