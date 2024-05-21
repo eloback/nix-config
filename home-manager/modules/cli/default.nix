@@ -2,11 +2,26 @@
 with lib;
 let
   cfg = config.custom.cli;
-  shell = import ./fish.nix;
 in
 {
   options.custom.cli.enable = mkEnableOption "enable cli programs.";
-  config = mkIf cfg.enable (with shell; {
+  config = mkIf cfg.enable {
+    programs.fish = {
+      enable = true;
+      shellAbbrs = {
+        lgit = "lazygit";
+      };
+      shellAliases = {
+        #nixos goodies
+        nxgit = "lazygit -p $HOME/flakes/system/";
+        nxcfg = "$EDITOR ~/flakes/system/flake.nix --cmd 'cd %:p:h'";
+        nxr = "sudo nixos-rebuild switch --flake ~/nix-config/#simone";
+        #----------
+        tm = "zellij"; # terminal multiplexer
+        cfg = "$EDITOR ~/.config/(ls ~/.config | sk)"; # edit dotfiles
+        passc = "pass -c"; # pass with copy
+      };
+    };
     home.packages = with pkgs; [
       hurl
       du-dust
@@ -41,5 +56,5 @@ in
     programs.password-store.enable = true;
     programs.direnv.enable = true;
     programs.lazygit.enable = true;
-  });
+  };
 }
