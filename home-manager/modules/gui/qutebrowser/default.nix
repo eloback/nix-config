@@ -39,6 +39,7 @@ in
         nw = "https://wiki.nixos.org/index.php?search={}";
         hmo = "https://home-manager-options.extranix.com/?query={}&release=master";
         np = "https://search.nixos.org/packages?query={}";
+        mn = "https://mynixos.com/search?q={}";
       };
       settings = {
         auto_save.session = true;
