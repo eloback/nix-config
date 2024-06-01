@@ -4,7 +4,6 @@
 , lib
 , config
 , pkgs
-, sddm-sugar-candy-nix
 , ...
 }: {
   # You can import other NixOS modules here
@@ -32,9 +31,6 @@
       #     patches = [ ./change-hello-to-hi.patch ];
       #   });
       # })
-
-      sddm-sugar-candy-nix.overlays.default
-
     ];
     # Configure your nixpkgs instance
     config = {
