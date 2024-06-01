@@ -358,7 +358,7 @@ let cfg = config.custom.hyprland; in {
           # "spacing"= 4; 
           "modules-left" = [ "wlr/workspaces" ];
           "modules-center" = [ "hyprland/window" ];
-          "modules-right" = [ "custom/updates" "pulseaudio" "network" "cpu" "memory" "temperature" "keyboard-state" "clock" ];
+          "modules-right" = [ "pulseaudio" "network" "cpu" "memory" "temperature" "clock" ];
           "wlr/workspaces" = {
             "format" = "{icon}";
             "on-scroll-up" = "hyprctl dispatch workspace e+1";
@@ -374,21 +374,6 @@ let cfg = config.custom.hyprland; in {
               "default" = "";
             };
           };
-          # "sway/workspaces"= {
-          #     "disable-scroll"= true,
-          #     "all-outputs"= true,
-          #     "format"= "{name}: {icon}",
-          #     "format-icons"= {
-          #         "1"= "",
-          #         "2"= "",
-          #         "3"= "",
-          #         "4"= "",
-          #         "5"= "",
-          #         "urgent"= "",
-          #         "focused"= "",
-          #         "default"= ""
-          #     }
-          # },
           "keyboard-state" = {
             "numlock" = true;
             "capslock" = true;
