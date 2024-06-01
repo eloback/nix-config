@@ -12,6 +12,7 @@ let cfg = config.custom.hyprland; in {
       pavucontrol
       grim
       slurp
+      wireplumber # volume control in pipewire
     ];
     wayland.windowManager.hyprland = {
       enable = true;
@@ -129,17 +130,18 @@ let cfg = config.custom.hyprland; in {
           "$mainMod CTRL, J, layoutmsg, swapwithmaster master"
 
           # Screenshot bindings
-          "rint, exec, grim '$HOME/Pictures/$(date +'%s_screen.png')'"
+          ",Print, exec, grim '$HOME/Pictures/$(date +'%s_screen.png')'"
           "SHIFT, Print, exec, grim - | wl-copy"
           #bind = SUPER, C, exec, grim -g "$(slurp)" "$HOME/Pictures/$(date +'%s_screen.png')"
           "SUPER SHIFT, Print, exec, grim -g '$(slurp)' - | wl-copy"
 
 
-          "XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-          "XF86AudioPlay, exec, playerctl play-pause"
-          "XF86AudioPause, exec, playerctl play-pause"
-          "XF86AudioNext, exec, playerctl next"
-          "XF86AudioPrev, exec, playerctl previous"
+          # Multimedia bindings
+          ",XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+          ",XF86AudioPlay, exec, playerctl play-pause"
+          ",XF86AudioPause, exec, playerctl play-pause"
+          ",XF86AudioNext, exec, playerctl next"
+          ",XF86AudioPrev, exec, playerctl previous"
 
           # Switch workspaces with mainMod + [0-9]
           "$mainMod, 1, workspace, 1"
@@ -189,10 +191,10 @@ let cfg = config.custom.hyprland; in {
 
 
           # Multimedia bindings
-          "XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
-          "UPER SHIFT CTRL, 4, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
-          "XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-          "UPER SHIFT CTRL, 3, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+          ",XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
+          "SUPER SHIFT CTRL, 4, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
+          ",XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+          "SUPER SHIFT CTRL, 3, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
 
 
         ];
@@ -348,165 +350,167 @@ let cfg = config.custom.hyprland; in {
       enable = true;
       systemd.enable = true;
       settings = {
-        "layer" = "top";
-        "position" = "top";
-        # "height"= 30; 
-        #  "width"= 1280;
-        # "spacing"= 4; 
-        "modules-left" = [ "wlr/workspaces" ];
-        "modules-center" = [ "hyprland/window" ];
-        "modules-right" = [ "custom/updates" "pulseaudio" "network" "cpu" "memory" "temperature" "keyboard-state" "clock" ];
-        "wlr/workspaces" = {
-          "format" = "{icon}";
-          "on-scroll-up" = "hyprctl dispatch workspace e+1";
-          "on-scroll-down" = "hyprctl dispatch workspace e-1";
-          "format-icons" = {
-            "1" = "";
-            "2" = "";
-            "3" = "";
-            "4" = "󰭹";
-            "5" = "";
-            "urgent" = "";
-            "focused" = "";
-            "default" = "";
+        mainBar = {
+          "layer" = "top";
+          "position" = "top";
+          # "height"= 30; 
+          #  "width"= 1280;
+          # "spacing"= 4; 
+          "modules-left" = [ "wlr/workspaces" ];
+          "modules-center" = [ "hyprland/window" ];
+          "modules-right" = [ "custom/updates" "pulseaudio" "network" "cpu" "memory" "temperature" "keyboard-state" "clock" ];
+          "wlr/workspaces" = {
+            "format" = "{icon}";
+            "on-scroll-up" = "hyprctl dispatch workspace e+1";
+            "on-scroll-down" = "hyprctl dispatch workspace e-1";
+            "format-icons" = {
+              "1" = "";
+              "2" = "";
+              "3" = "";
+              "4" = "󰭹";
+              "5" = "";
+              "urgent" = "";
+              "focused" = "";
+              "default" = "";
+            };
           };
-        };
-        # "sway/workspaces"= {
-        #     "disable-scroll"= true,
-        #     "all-outputs"= true,
-        #     "format"= "{name}: {icon}",
-        #     "format-icons"= {
-        #         "1"= "",
-        #         "2"= "",
-        #         "3"= "",
-        #         "4"= "",
-        #         "5"= "",
-        #         "urgent"= "",
-        #         "focused"= "",
-        #         "default"= ""
-        #     }
-        # },
-        "keyboard-state" = {
-          "numlock" = true;
-          "capslock" = true;
-          "format" = "{icon} {name}";
-          "format-icons" = {
-            "locked" = "";
-            "unlocked" = "";
+          # "sway/workspaces"= {
+          #     "disable-scroll"= true,
+          #     "all-outputs"= true,
+          #     "format"= "{name}: {icon}",
+          #     "format-icons"= {
+          #         "1"= "",
+          #         "2"= "",
+          #         "3"= "",
+          #         "4"= "",
+          #         "5"= "",
+          #         "urgent"= "",
+          #         "focused"= "",
+          #         "default"= ""
+          #     }
+          # },
+          "keyboard-state" = {
+            "numlock" = true;
+            "capslock" = true;
+            "format" = "{icon} {name}";
+            "format-icons" = {
+              "locked" = "";
+              "unlocked" = "";
+            };
           };
-        };
 
-        "hyprland/window" = {
-          "format" = "➡ {}";
-          "separate-outputs" = true;
-        };
+          "hyprland/window" = {
+            "format" = "➡ {}";
+            "separate-outputs" = true;
+          };
 
-        "mpd" = {
-          "format" = "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ";
-          "format-disconnected" = "Disconnected ";
-          "format-stopped" = "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ";
-          "unknown-tag" = "N/A";
-          "interval" = 2;
-          "consume-icons" = {
-            "on" = " ";
+          "mpd" = {
+            "format" = "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ";
+            "format-disconnected" = "Disconnected ";
+            "format-stopped" = "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ";
+            "unknown-tag" = "N/A";
+            "interval" = 2;
+            "consume-icons" = {
+              "on" = " ";
+            };
+            "random-icons" = {
+              "off" = "<span color=\"#f53c3c\"></span> ";
+              "on" = " ";
+            };
+            "repeat-icons" = {
+              "on" = " ";
+            };
+            "single-icons" = {
+              "on" = "1 ";
+            };
+            "state-icons" = {
+              "paused" = "";
+              "playing" = "";
+            };
+            "tooltip-format" = "MPD (connected)";
+            "tooltip-format-disconnected" = "MPD (disconnected)";
           };
-          "random-icons" = {
-            "off" = "<span color=\"#f53c3c\"></span> ";
-            "on" = " ";
+          "idle_inhibitor" = {
+            "format" = "{icon}";
+            "format-icons" = {
+              "activated" = "";
+              "deactivated" = "";
+            };
           };
-          "repeat-icons" = {
-            "on" = " ";
+          "tray" = {
+            # "icon-size"= 21;
+            "spacing" = 10;
           };
-          "single-icons" = {
-            "on" = "1 ";
+          "clock" = {
+            # "timezone"= "America/New_York";
+            "tooltip-format" = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+            "format-alt" = "{:%Y-%m-%d}";
           };
-          "state-icons" = {
-            "paused" = "";
-            "playing" = "";
+          "cpu" = {
+            "format" = " {usage}%";
+            "tooltip" = false;
           };
-          "tooltip-format" = "MPD (connected)";
-          "tooltip-format-disconnected" = "MPD (disconnected)";
-        };
-        "idle_inhibitor" = {
-          "format" = "{icon}";
-          "format-icons" = {
-            "activated" = "";
-            "deactivated" = "";
+          "memory" = {
+            "format" = "{}% ";
           };
-        };
-        "tray" = {
-          # "icon-size"= 21;
-          "spacing" = 10;
-        };
-        "clock" = {
-          # "timezone"= "America/New_York";
-          "tooltip-format" = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
-          "format-alt" = "{:%Y-%m-%d}";
-        };
-        "cpu" = {
-          "format" = " {usage}%";
-          "tooltip" = false;
-        };
-        "memory" = {
-          "format" = "{}% ";
-        };
-        "temperature" = {
-          # "thermal-zone"= 2,
-          # "hwmon-path"= "/sys/class/hwmon/hwmon2/temp1_input",
-          "critical-threshold" = 80;
-          # "format-critical"= "{temperatureC}°C {icon}";
-          "format" = "{icon} {temperatureC}°C";
-          "format-icons" = [ "" "" "" ];
-        };
-        "backlight" = {
-          # "device"= "acpi_video1";
-          "format" = "{percent}% {icon}";
-          "format-icons" = [ "" "" "" "" "" "" "" "" "" ];
-        };
-        "battery" = {
-          "states" = {
-            # "good"= 95;
-            "warning" = 30;
-            "critical" = 15;
+          "temperature" = {
+            # "thermal-zone"= 2,
+            # "hwmon-path"= "/sys/class/hwmon/hwmon2/temp1_input",
+            "critical-threshold" = 80;
+            # "format-critical"= "{temperatureC}°C {icon}";
+            "format" = "{icon} {temperatureC}°C";
+            "format-icons" = [ "" "" "" ];
           };
-          "format" = "{capacity}% {icon}";
-          "format-charging" = "{capacity}% ";
-          "format-plugged" = "{capacity}% ";
-          "format-alt" = "{time} {icon}";
-          # "format-good"= "", # An empty format will hide the module
-          # "format-full"= "";
-          "format-icons" = [ "" "" "" "" "" ];
-        };
-        "battery\#bat2" = {
-          "bat" = "BAT2";
-        };
-        "network" = {
-          # "interface"= "wlp2*", # (Optional) To force the use of this interface
-          "format-wifi" = " {essid} ({signalStrength}%)";
-          "format-ethernet" = " {ipaddr}/{cidr}";
-          "tooltip-format" = " {ifname} via {gwaddr}";
-          "format-linked" = " {ifname} (No IP)";
-          "format-disconnected" = "⚠ Disconnected";
-          "format-alt" = "{ifname}: {ipaddr}/{cidr}";
-        };
-        "pulseaudio" = {
-          # "scroll-step"= 1, // %, can be a float
-          "format" = "{icon}  {volume}%   {format_source}";
-          "format-bluetooth" = "{volume}% {icon} {format_source}";
-          "format-bluetooth-muted" = " {icon} {format_source}";
-          "format-muted" = " {format_source}";
-          "format-source" = " {volume}%";
-          "format-source-muted" = "";
-          "format-icons" = {
-            "headphone" = "";
-            "hands-free" = "";
-            "headset" = "";
-            "phone" = "";
-            "portable" = "";
-            "car" = "";
-            "default" = [ "" "" "" ];
+          "backlight" = {
+            # "device"= "acpi_video1";
+            "format" = "{percent}% {icon}";
+            "format-icons" = [ "" "" "" "" "" "" "" "" "" ];
           };
-          "on-click" = "pavucontrol";
+          "battery" = {
+            "states" = {
+              # "good"= 95;
+              "warning" = 30;
+              "critical" = 15;
+            };
+            "format" = "{capacity}% {icon}";
+            "format-charging" = "{capacity}% ";
+            "format-plugged" = "{capacity}% ";
+            "format-alt" = "{time} {icon}";
+            # "format-good"= "", # An empty format will hide the module
+            # "format-full"= "";
+            "format-icons" = [ "" "" "" "" "" ];
+          };
+          "battery\#bat2" = {
+            "bat" = "BAT2";
+          };
+          "network" = {
+            # "interface"= "wlp2*", # (Optional) To force the use of this interface
+            "format-wifi" = " {essid} ({signalStrength}%)";
+            "format-ethernet" = " {ipaddr}/{cidr}";
+            "tooltip-format" = " {ifname} via {gwaddr}";
+            "format-linked" = " {ifname} (No IP)";
+            "format-disconnected" = "⚠ Disconnected";
+            "format-alt" = "{ifname}: {ipaddr}/{cidr}";
+          };
+          "pulseaudio" = {
+            # "scroll-step"= 1, // %, can be a float
+            "format" = "{icon}  {volume}%   {format_source}";
+            "format-bluetooth" = "{volume}% {icon} {format_source}";
+            "format-bluetooth-muted" = " {icon} {format_source}";
+            "format-muted" = " {format_source}";
+            "format-source" = " {volume}%";
+            "format-source-muted" = "";
+            "format-icons" = {
+              "headphone" = "";
+              "hands-free" = "";
+              "headset" = "";
+              "phone" = "";
+              "portable" = "";
+              "car" = "";
+              "default" = [ "" "" "" ];
+            };
+            "on-click" = "pavucontrol";
+          };
         };
       };
     };
@@ -521,68 +525,5 @@ let cfg = config.custom.hyprland; in {
     };
     services.cliphist.enable = true;
     programs.fish.enable = true;
-    xdg.configFile."hypr/frappe.conf".text = ''
-      $rosewaterAlpha = fff5e0dc
-      $flamingoAlpha  = fff2cdcd
-      $pinkAlpha      = fff5c2e7
-      $mauveAlpha     = ffcba6f7
-      $redAlpha       = fff38ba8
-      $maroonAlpha    = ffeba0ac
-      $peachAlpha     = fffab387
-      $yellowAlpha    = fff9e2af
-      $greenAlpha     = ffa6e3a1
-      $tealAlpha      = ff94e2d5
-      $skyAlpha       = ff89dceb
-      $sapphireAlpha  = ff74c7ec
-      $blueAlpha      = ff89b4fa
-      $lavenderAlpha  = ffb4befe
-
-      $textAlpha      = ffcdd6f4
-      $subtext1Alpha  = ffbac2de
-      $subtext0Alpha  = ffa6adc8
-
-      $overlay2Alpha  = ff9399b2
-      $overlay1Alpha  = ff7f849c
-      $overlay0Alpha  = ff6c7086
-
-      $surface2Alpha  = ff585b70
-      $surface1Alpha  = ff45475a
-      $surface0Alpha  = ff313244
-
-      $baseAlpha      = ff1e1e2e
-      $mantleAlpha    = ff181825
-      $crustAlpha     = ff11111b
-
-      $rosewater = 0xfff5e0dc
-      $flamingo  = 0xfff2cdcd
-      $pink      = 0xfff5c2e7
-      $mauve     = 0xffcba6f7
-      $red       = 0xfff38ba8
-      $maroon    = 0xffeba0ac
-      $peach     = 0xfffab387
-      $yellow    = 0xfff9e2af
-      $green     = 0xffa6e3a1
-      $teal      = 0xff94e2d5
-      $sky       = 0xff89dceb
-      $sapphire  = 0xff74c7ec
-      $blue      = 0xff89b4fa
-      $lavender  = 0xffb4befe
-
-      $text      = 0xffcdd6f4
-      $subtext1  = 0xffbac2de
-      $subtext0  = 0xffa6adc8
-
-      $overlay2  = 0xff9399b2
-      $overlay1  = 0xff7f849c
-      $overlay0  = 0xff6c7086
-
-      $surface2  = 0xff585b70
-      $surface1  = 0xff45475a
-      $surface0  = 0xff313244
-
-      $base      = 0xff1e1e2e
-      $mantle    = 0xff181825
-      $crust     = 0xff11111b
-    '';
   };
 }
