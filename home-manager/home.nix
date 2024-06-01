@@ -54,7 +54,9 @@
 
   # Add stuff for your user as you see fit:
   fonts.fontconfig.enable = true;
-  # home.packages = with pkgs; [ steam ];
+  home.packages = [
+    (pkgs.nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" "JetBrainsMono" ]; })
+  ];
 
   # Enable home-manager and git
   programs.home-manager.enable = true;
