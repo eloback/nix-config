@@ -49,6 +49,10 @@ in
       enable = true;
       enableFishIntegration = true;
     };
+    programs.skim = {
+      enable = true;
+      enableFishIntegration = true;
+    };
     programs.atuin = {
       enable = true;
       enableFishIntegration = true;
