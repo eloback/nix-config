@@ -8,12 +8,20 @@
     # Home manager
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+
+    sddm-sugar-candy-nix = {
+      url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
+      # Optional, by default this flake follows nixpkgs-unstable.
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
     { self
     , nixpkgs
     , home-manager
+    , sddm-sugar-candy-nix
     , ...
     } @ inputs:
     let
@@ -29,6 +37,12 @@
           modules = [
             ./nixos/configuration.nix
             # NOTE: To use standalone home-manager configuration comment bellow here.
+            sddm-sugar-candy-nix.nixosModules.default
+            {
+              nixpkgs = {
+                overlay = [ sddm-sugar-candy-nix.overlays.default ];
+              };
+            }
             home-manager.nixosModules.home-manager
             {
               home-manager = {
