@@ -38,11 +38,6 @@
             ./nixos/configuration.nix
             # NOTE: To use standalone home-manager configuration comment bellow here.
             sddm-sugar-candy-nix.nixosModules.default
-            {
-              nixpkgs = {
-                overlay = [ sddm-sugar-candy-nix.overlays.default ];
-              };
-            }
             home-manager.nixosModules.home-manager
             {
               home-manager = {
