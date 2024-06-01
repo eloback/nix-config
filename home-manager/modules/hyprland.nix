@@ -499,6 +499,10 @@ let cfg = config.custom.hyprland; in {
         };
       };
     };
+    xdg.configFile = {
+      "waybar".source = ./waybar/styles;
+      "waybar".recursive = true;
+    };
     services.mako = {
       enable = true;
       defaultTimeout = 10000;
